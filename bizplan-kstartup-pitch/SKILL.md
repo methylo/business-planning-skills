@@ -1,233 +1,91 @@
 ---
 name: bizplan-kstartup-pitch
-description: >
-  사업계획서 본문에서 발표용 피치덱(.pptx) 17장을 만든다. 본문 항목을 슬라이드로 옮기고 상황에 맞는 스토리라인(문제 먼저·성과
-  먼저·시장 먼저) 중 하나를 골라 순서를 잡은 뒤 발표 노트까지 낸다. 본문은 제출했고 데모데이·IR 발표가 남았을 때 고른다. 트리거:
-  K-Startup 피치덱, 사업계획서 발표자료, 창업 피치덱, 데모데이 발표자료, 스타트업 IR, 심사발표 자료, 창업 PT. 본문은
-  bizplan-kstartup, 강의 슬라이드는 lecture-slides를 쓴다.
+description: >-
+  K-Startup 사업계획서의 핵심 내용을 기본 17장 발표용 피치덱으로 구성한다. 피치 입력 JSON을 검토하고 문제·솔루션·시장·전략·팀 순서를 선택해 PPTX와 발표 노트를 만들 때 사용한다.
+version: 1.2.0
+author: 홍순성 (methylo)
+license: All Rights Reserved
 ---
 
-# bizplan-kstartup-pitch — K-Startup 사업계획서 피치덱 작성 스킬
+# bizplan-kstartup-pitch
 
-## 스킬 목적
+사업계획서의 핵심 주장과 수치를 17장 발표용 피치덱으로 변환한다. 생성기는 섹션 순서를 바꾸는 세 가지 패턴을 지원하며 슬라이드 수는 17장으로 고정한다.
 
-`bizplan-kstartup`으로 작성한 본문 사업계획서(.docx)를 입력받아, 7~10분 발표용 피치덱(.pptx, 16:9)을 생성한다. 데모데이·IR·심사발표·창업경진대회 등 발표 상황에 대응한다. 본문에서 핵심 메시지·수치·차별점을 자동 추출해 17장 슬라이드로 변환한다.
+## 포함 파일
 
-## 참조 파일
+- `references/slide-blocks.md`: 레이아웃 규격
+- `references/template.js`: PptxGenJS 레이아웃 함수
+- `references/narrative-patterns.md`: 본문과 슬라이드 매핑
+- `references/pitch-input-schema.md`: 생성기 입력 계약
+- `scripts/build-pitch.js`: 17장 PPTX 생성기
+- `examples/pitch-input.example.json`: 가상 입력 예시
+- `package.json`: Node.js 의존성과 실행 명령
 
-- `references/slide-blocks.md` — 레이아웃 7종(L1~L7) 좌표·치수·폰트·컬러 사양
-- `references/template.js` — pptxgenjs 기반 레이아웃 함수 뼈대(실행 가능 코드)
-- `references/narrative-patterns.md` — 본문→피치덱 추출 매핑 테이블 + 스토리라인 패턴 3종
+## 준비
 
-## 전체 흐름
-
-```
-Step 1. 본문 핵심 추출 (.docx → 슬라이드 입력값 객체)
-   ↓
-Step 2. 스토리라인 패턴 선택 (A·B·C 중 추천·사용자 확정)
-   ↓
-Step 3. 슬라이드 구조 확정 (기본 17장, 가감 가능)
-   ↓
-Step 4. .pptx 생성 (pptxgenjs + template.js)
-   ↓
-Step 5. 발표 노트 작성 (슬라이드별 구술 스크립트, 선택)
+```text
+cd bizplan-kstartup-pitch
+npm install
+npm run build -- examples/pitch-input.example.json output.pptx
 ```
 
-## Step 간 전환 규칙
+Node.js와 `pptxgenjs`가 필요하다. Noto Sans KR이 없으면 실행 환경의 한글 산세리프 글꼴로 대체될 수 있으므로 최종 파일에서 줄바꿈을 확인한다.
 
-- Step 1 → 추출 결과 시트(대화창 텍스트) → 사용자 확인 후 Step 2
-- Step 2 → 패턴 A/B/C 중 자동 추천(의사결정 트리) → 사용자 확정 후 Step 3
-- Step 3 → 슬라이드 구조 개요(17장 리스트) → 사용자 승인 후 Step 4
-- Step 4 → .pptx 파일 생성·저장
-- Step 5 → 발표 노트 .md 별도 저장 (선택)
+## 절차
 
-## 17장 기본 구조
+1. 사업계획서 또는 `*_pitch_input_*.json`에서 핵심 내용을 추출한다.
+2. `references/pitch-input-schema.md`의 필수 값을 확인한다.
+3. Problem-First, Team-First, Market & Strategy-First 중 섹션 순서를 추천하고 사용자 확인을 받는다.
+4. 최종 슬라이드 목록과 제목을 확정한다.
+5. 입력 JSON을 `scripts/build-pitch.js`로 전달해 PPTX를 생성한다.
+6. 파일 존재, 슬라이드 수, ZIP 무결성, 텍스트 오버플로를 확인한다.
+7. 필요하면 슬라이드별 발표 노트를 Markdown으로 작성한다.
 
-```
-S1   L1 Cover           표지
-S2   L2 Divider 01      Problem
-S3   L3 Content         문제 정의
-S4   L4 Number          문제 규모 (수치)
-S5   L2 Divider 02      Solution
-S6   L3 Content         솔루션 개요
-S7   L3 Content         작동 방식
-S8   L5 Compare         차별점 비교
-S9   L2 Divider 03      Market & Strategy
-S10  L3 Content         타깃 고객
-S11  L4 Number          시장 규모 (TAM/SAM/SOM)
-S12  L3 Content         진입 전략
-S13  L4 Number          매출·수익 모델
-S14  L5 Compare         자금 소요·조달
-S15  L2 Divider 04      Team
-S16  L6 Team            팀 구성
-S17  L7 Closing         비전·CTA
-```
+`.docx` 직접 추출 기능은 생성기에 포함되어 있지 않다. 실행 환경의 문서 읽기 기능으로 피치 입력 JSON을 먼저 만든다. 입력 JSON 없이 17장 자동 생성을 완료했다고 보고하지 않는다.
 
-발표 시간 단축 시 디바이더(S2·S5·S9·S15) 또는 L3 슬라이드(S7·S13) 제거. 최소 11장까지 축소 가능.
+## 기본 17장
 
-## 7종 레이아웃 (요약)
-
-상세 좌표·치수는 `slide-blocks.md`, 실행 코드는 `template.js` 참조.
-
-- **L1 Cover** — 표지 (대제목 54pt + 부제 24pt + 팀·일자)
-- **L2 Divider** — 좌측 네이비 블록에 숫자 90pt + 영문 섹션명 28pt
-- **L3 Content** — 제목 32pt + 본문 18pt 글머리 최대 5개
-- **L4 Number** — 대형 숫자 60pt + 우측 설명 박스 18pt
-- **L5 Compare** — 3~5행 × 3~4열 표, 자사 행 네이비 하이라이트
-- **L6 Team** — 2~4인 카드 그리드 (사진 원 + 이름·역할·이력)
-- **L7 Closing** — 비전 40pt 중앙 + 연락처 + 감사 문구
-
-## 컬러·폰트 토큰 (고정)
-
-```
-COLOR   primary #1E3A8A / text #1F2937 / muted #6B7280
-        bg_light #F3F4F6 / border #D1D5DB / white #FFFFFF
-FONT    Noto Sans KR (Bold / Medium / Regular)
-LAYOUT  LAYOUT_WIDE (13.333" × 7.5")
+```text
+S1  표지
+S2  Problem 구분
+S3  문제 정의
+S4  문제 규모
+S5  Solution 구분
+S6  솔루션 개요
+S7  작동 방식
+S8  차별점 비교
+S9  Market & Strategy 구분
+S10 타깃 고객
+S11 시장 규모
+S12 진입 전략
+S13 매출·수익 모델
+S14 자금 소요·조달
+S15 Team 구분
+S16 팀 구성
+S17 비전·CTA
 ```
 
-토큰 외 컬러·폰트 사용 금지. 일관성 깨지면 심사장 인상이 급격히 낮아짐.
+## 패턴 선택
 
-## Step별 작성 지침
+- Problem-First: 문제→솔루션→시장·전략→팀
+- Team-First: 팀→문제→솔루션→시장·전략
+- Market & Strategy-First: 시장·전략→문제→솔루션→팀
 
-### Step 0. 사전 입력 인식 (자동 실행)
+패턴은 4개 섹션의 순서만 바꾸며, 트랙션 슬라이드나 새로운 근거를 자동 생성하지 않는다.
 
-스킬 호출 시 다음 순서로 입력을 자동 탐색합니다.
+## 출력
 
-1. 작업 폴더에서 `*_사업계획서_*.docx` 또는 본문 요약 시트 검색
-2. 파일이 있으면 본문 모드(Step 1)로 진입
-3. 파일이 없으면 단독 모드(Step 1-B)로 진입
-
-### Step 1. 본문 핵심 추출 (본문 모드)
-
-입력: `bizplan-kstartup` .docx 또는 본문 요약 시트
-
-추출 규칙 (상세는 `narrative-patterns.md` 매핑 테이블):
-- PSST 12개 소항목 중 10개 → 피치덱 슬라이드 입력값 객체로 변환
-- 생략: 1-2 외부환경, 4-3 인력 운용
-- 흡수: 2-1 현황 → S6, 3-3 일정 → S12, 4-2 협력 → S16
-
-출력 (대화창):
-- 17장 × 레이아웃별 입력값 객체 목록
-- 누락·보완 필요 항목 플래그
-
-### Step 1-B. 본문 없이 단독 실행 (대체 경로)
-
-본문(.docx) 또는 본문 요약 시트가 없는 경우, 사용자에게 17장 슬라이드 핵심 정보를 직접 입력받아 진행합니다.
-
-필수 입력 6항목:
-- 사업 한 줄 정의 (S1·S3 활용)
-- 문제 정의 + 문제 규모 수치 (S3·S4 활용)
-- 솔루션 개요 + 작동 방식 (S6·S7 활용)
-- 차별점 3가지 (S8 활용)
-- 시장 규모 (TAM/SAM/SOM, S11 활용)
-- 자금 소요·조달 + 매출 모델 (S13·S14 활용)
-
-선택 입력 3항목:
-- 진입 전략 (S12)
-- 팀 구성 (S16)
-- 비전·CTA (S17)
-
-이후 Step 2 패턴 선택부터 본문 모드와 동일하게 진행합니다.
-
-### Step 2. 스토리라인 패턴 선택
-
-의사결정 트리:
-```
-검증 데이터(매출·사용자) 있음? → 패턴 B (Traction-First)
-                       없음
-일반 소비자? → 패턴 A (Problem-First)
-기업 고객? → 패턴 C (Market-First)
+```text
+{기업명}_피치덱_{YYMMDD}.pptx
+{기업명}_발표노트_{YYMMDD}.md
 ```
 
-사용자에게 추천 패턴 + 나머지 2개 제시 후 확정.
+## 완료 확인
 
-### Step 3. 슬라이드 구조 확정
-
-17장 기본 구조에서 가감:
-- 시간 단축 요청: 디바이더 4장 또는 L3 중 선택 제거
-- 강조 요청: 특정 섹션에 L3 추가 (예: 기술 기반은 솔루션 2장)
-
-출력 (대화창): 최종 슬라이드 리스트 (번호·레이아웃·제목)
-
-### Step 4. .pptx 생성
-
-실행 경로:
-```
-1. pptxgen 초기화 + LAYOUT_WIDE
-2. template.js의 applyMaster(pres) 호출
-3. 각 슬라이드별 L1_Cover, L2_Divider, L3_Content ... 함수 호출
-4. pres.writeFile({ fileName: ... }) 로 저장
-```
-
-저장 경로: 본문(.docx)과 동일 폴더 권장.
-파일명: `{기업명}_피치덱_{YYMMDD}.pptx`
-
-### Step 5. 발표 노트 (선택)
-
-슬라이드별 구술 스크립트:
-- 슬라이드당 15~45초 분량
-- 총 7~10분 (17장 기준)
-- 형식: `S{번호} | {핵심 문장} | {보충 설명} | {전환 문장}`
-
-저장: `{기업명}_발표노트_{YYMMDD}.md`
-
-### Step 6. 다음 단계 안내 (자동 출력)
-
-피치덱 .pptx 생성 완료 후, 사용자에게 다음 메시지를 자동 출력합니다.
-
-```
-피치덱이 완성되었습니다.
-산출물: {기업명}_피치덱_{YYMMDD}.pptx
-선택 산출물: {기업명}_발표노트_{YYMMDD}.md
-
-파이프라인 3단계가 모두 완료되었습니다.
-- 1단계 리서치 카드 (BR_*.md 5종)
-- 2단계 본문 (.docx)
-- 3단계 피치덱 (.pptx)
-
-정부 제출용 한글파일이 필요하면:
-"이 사업계획서를 한글파일로 변환해줘"
-
-다른 정부지원사업에 같은 사업 아이템을 신청하시려면:
-"같은 사업 아이템으로 다른 공고용 본문을 만들어줘"
-(2단계 본문만 다시 실행하며, 1단계 리서치 카드는 그대로 재사용합니다)
-```
-
-## 사용자 입력 부족 대응
-
-각 Step에서 필수 정보가 누락되면:
-1. 누락 항목을 구체적으로 질문 (선택지 3개 이내, 한 번에 하나)
-2. 본문 플레이스홀더가 있으면 `[⚠ 입력 필요]` 표기로 슬라이드 생성
-3. 발표 노트에 보완 지점 리스트 포함
-
-## 자가 점검 (Step 4 완료 시)
-
-- [ ] 슬라이드당 한 메시지 원칙 준수
-- [ ] L3 본문 글머리 5개 초과 없음
-- [ ] 수치에 출처 또는 근거 병기
-- [ ] 컬러 토큰 7색 외 사용 없음
-- [ ] Noto Sans KR 이외 폰트 없음
-- [ ] 모든 텍스트가 13.333 × 7.5 경계 안에 위치
-- [ ] 공통 하네스 (금지어·추상형용사·AI 흔적 0건)
-
-## 최종 출력
-
-- 경로: 본문(.docx)과 동일 폴더 권장 또는 사용자 지정
-- 파일명: `{기업명}_피치덱_{YYMMDD}.pptx`
-- 기본 17장, 가감 시 11~20장 범위
-- 선택 산출물: 발표 노트 .md
-
-## 스킬 체인
-
-```
-bizplan-research (BR_ 카드 4종)
-     ↓ 슬롯 매핑
-bizplan-kstartup (.docx 본문)
-     ↓ 핵심 추출
-bizplan-kstartup-pitch (.pptx 피치덱)  ← 본 스킬
-     ↓ 변환 (필요 시)
-hwpx (.hwpx 제출용)
-```
-
-본 스킬은 파이프라인 3단계. 본문 완성 후 호출되며, 발표 노트를 함께 출력한다. 정부지원사업 제출 시 `.hwpx` 변환은 별도 `hwpx` 스킬을 호출한다.
+- [ ] 입력 JSON의 필수 필드가 있다.
+- [ ] 수치마다 기준과 출처가 있다.
+- [ ] 슬라이드당 핵심 메시지가 하나다.
+- [ ] PPTX가 실제 생성되고 17장이다.
+- [ ] 팀 슬라이드를 포함한 모든 레이아웃이 생성된다.
+- [ ] 글꼴 대체와 텍스트 오버플로를 확인했다.
+- [ ] 발표 시간에 맞춰 발표 노트 분량을 조정했다.

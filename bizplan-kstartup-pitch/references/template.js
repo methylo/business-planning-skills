@@ -120,11 +120,12 @@ function L5_Compare(pres, { title, header, rows, highlightRow, caption }) {
 
 // ==================== L6 TEAM CARDS ====================
 function L6_Team(pres, { title, members }) {
-  // members: [{ name, role, career }]  (2~4개)
+  // members: [{ name, role, career }]  (1~4개)
   const s = pres.addSlide({ masterName: "KSTARTUP_MASTER" });
   s.addText(title, { x: 0.5, y: 0.5, w: 12.3, h: 0.8, fontFace: FONT, fontSize: SIZE.title_content, bold: true, color: COLOR.primary });
 
   const GRIDS = {
+    1: [{ x: 4.7, w: 3.9 }],
     2: [{ x: 2.0, w: 4.3 }, { x: 7.0, w: 4.3 }],
     3: [{ x: 0.7, w: 3.9 }, { x: 4.7, w: 3.9 }, { x: 8.7, w: 3.9 }],
     4: [{ x: 0.5, w: 3.0 }, { x: 3.7, w: 3.0 }, { x: 6.9, w: 3.0 }, { x: 10.1, w: 3.0 }],
@@ -134,7 +135,7 @@ function L6_Team(pres, { title, members }) {
   members.slice(0, 4).forEach((m, i) => {
     const { x, w } = g[i];
     // 사진 원
-    s.addShape(pres.ShapeType.oval, { x: x + w / 2 - 0.7, y: 1.9, w: 1.4, h: 1.4, fill: { color: COLOR.bg_light }, line: { color: COLOR.border, width: 1 } });
+    s.addShape(pres.ShapeType.ellipse, { x: x + w / 2 - 0.7, y: 1.9, w: 1.4, h: 1.4, fill: { color: COLOR.bg_light }, line: { color: COLOR.border, width: 1 } });
     s.addText(m.name,   { x, y: 4.0, w, h: 0.5, fontFace: FONT, fontSize: 20, bold: true, color: COLOR.primary, align: "center" });
     s.addText(m.role,   { x, y: 4.5, w, h: 0.4, fontFace: FONT, fontSize: 15, color: COLOR.text, align: "center" });
     s.addText(m.career, { x, y: 4.9, w, h: 1.5, fontFace: FONT, fontSize: 13, color: COLOR.muted, align: "center", lineSpacingMultiple: 1.4 });
@@ -164,7 +165,7 @@ module.exports = {
 // const pres = new pptxgen();
 // pres.layout = "LAYOUT_WIDE";  // 13.333 × 7.5
 // applyMaster(pres);
-// L1_Cover(pres, { title: "서비스명", subtitle: "한 줄 정의", team: "팀명", date: "2026.04.24", notice: "공고명" });
+// L1_Cover(pres, { title: "서비스명", subtitle: "한 줄 정의", team: "팀명", date: "{date}", notice: "공고명" });
 // L2_Divider(pres, { number: "01", labelEn: "Problem", labelKo: "문제 정의", oneLiner: "해결해야 하는 문제" });
 // L3_Content(pres, { title: "문제 정의", subtitle: "타깃이 겪는 불편", bullets: ["항목 1", "항목 2", "항목 3"] });
 // pres.writeFile({ fileName: "pitch.pptx" });

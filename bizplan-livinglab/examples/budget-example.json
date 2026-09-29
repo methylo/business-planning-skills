@@ -1,0 +1,13 @@
+{
+  "total": 20000000,
+  "notice": "가상 계산 예시이며 실제 공고의 허용 비목이나 한도를 뜻하지 않는다.",
+  "items": [
+    {"category": "활동비", "amount": 462272, "formula": [{"unit_price": 462272, "quantity": 1}]},
+    {"category": "급량비", "amount": 283000, "formula": [{"unit_price": 3000, "quantity": 33}, {"unit_price": 8000, "quantity": 23}]},
+    {"category": "재료비", "amount": 10215728, "formula": [{"unit_price": 10215728, "quantity": 1}]},
+    {"category": "홍보비", "amount": 1863000, "formula": [{"unit_price": 1863000, "quantity": 1}]},
+    {"category": "강사비", "amount": 1400000, "formula": [{"unit_price": 250000, "quantity": 1}, {"unit_price": 120000, "quantity": 5}, {"unit_price": 150000, "quantity": 1}, {"unit_price": 80000, "quantity": 5}]},
+    {"category": "체험비", "amount": 1900000, "formula": [{"unit_price": 1900000, "quantity": 1}]},
+    {"category": "임차비", "amount": 3876000, "formula": [{"unit_price": 3876000, "quantity": 1}]}
+  ]
+}

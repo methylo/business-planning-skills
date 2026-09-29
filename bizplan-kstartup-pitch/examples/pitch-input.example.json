@@ -1,0 +1,8 @@
+{
+  "meta": {"title": "가상 돌봄 연결 서비스", "subtitle": "보호자와 돌봄 인력을 연결하는 가상 예시", "team": "해솔팀", "date": "20XX-01-01", "notice": "가상 창업지원사업", "pattern": "A", "contact": "contact@example.com"},
+  "problem": {"definition": ["보호자는 돌봄 진행 상황을 확인하기 어려움", "돌봄 인력은 반복 보고에 시간을 사용함", "본 예시는 기능 검증용 가상 데이터임"], "number": "0", "unit": "가상 수치", "description": "실제 사용 시 공식 근거 수치로 교체", "source": "가상 예시"},
+  "solution": {"overview": ["방문 일정 공유", "활동 기록", "보호자 알림"], "workings": ["일정 등록", "현장 활동 기록", "보호자 확인"], "comparison": {"header": ["대안", "기록", "알림"], "rows": [["자사", "구조화", "자동"], ["대안 A", "수기", "개별 연락"]], "highlightRow": 0}},
+  "market": {"target": ["가상 목표고객 A", "가상 목표고객 B"], "size": {"number": "0", "unit": "원", "description": "공식 통계로 교체", "source": "가상 예시"}, "entry": ["가상 실증", "가상 파트너 연계", "가상 유료 전환"], "revenue": {"number": "0", "unit": "원", "description": "가격×고객수 산식으로 교체", "source": "가상 예시"}, "funding": {"header": ["용도", "금액"], "rows": [["개발", "0"], ["검증", "0"]], "highlightRow": -1}},
+  "team": {"members": [{"name": "대표", "role": "사업", "career": "가상 이력"}, {"name": "팀원", "role": "개발", "career": "가상 이력"}]},
+  "closing": {"vision": "확인 가능한 돌봄 경험을 만듭니다", "contact": "contact@example.com", "thanks": "감사합니다"}
+}

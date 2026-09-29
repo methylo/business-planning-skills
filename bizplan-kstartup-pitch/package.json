@@ -1,0 +1,17 @@
+{
+  "name": "bizplan-kstartup-pitch",
+  "version": "1.2.0",
+  "private": true,
+  "description": "K-Startup 17-slide pitch deck builder",
+  "main": "scripts/build-pitch.js",
+  "scripts": {
+    "build": "node scripts/build-pitch.js",
+    "test": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "4.0.0"
+  },
+  "overrides": {
+    "image-size": "2.0.4"
+  }
+}

@@ -1,5 +1,9 @@
 .DS_Store
 __MACOSX/
 Icon?
+node_modules/
+__pycache__/
+*.pyc
 *.swp
 *.tmp
+*.pptx
