@@ -1,5 +1,9 @@
 # Business Planning Skills
 
+> 책 〈클로드 스킬 가이드〉 — [예스24에서 보기](https://www.yes24.com/product/goods/199636519)
+>
+> 독자 단톡방 「AI 책쓰기: 집필의 기술」 — [카카오톡 오픈채팅 참여](https://open.kakao.com/o/ghqbvP0h)
+
 한국어 사업계획서의 조사·본문 작성·피치덱 제작을 연결하는 Claude 스타일 Agent Skill 모음입니다.
 
 ## 수록 스킬
